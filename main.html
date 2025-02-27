@@ -1,13 +1,65 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Eligibility</title>
+    <script>
+        // Function to handle the form submission
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
 
-<html>
-  <head>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+            // Get values from the form
+            const age = document.getElementById('age').value;
+            const name = document.getElementById('name').value;
 
-  <body>
-    <!-- write the body here -->
+            // Validate if both fields are filled
+            if (age === "" || name === "") {
+                alert("Please enter valid details.");
+                return;
+            }
 
-    <script type="text/javascript" src="./script.js"></script>
-  </body>
+            // Create a promise to check age eligibility
+            const eligibilityPromise = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (parseInt(age) > 18) {
+                        resolve(name); // Age is above 18, resolve with the name
+                    } else {
+                        reject(name); // Age is below 18, reject with the name
+                    }
+                }, 4000); // 4 seconds delay
+            });
+
+            // Handling the result of the promise
+            eligibilityPromise
+                .then((name) => {
+                    alert(`Welcome, ${name}. You can vote.`);
+                })
+                .catch((name) => {
+                    alert(`Oh sorry ${name}. You aren't old enough.`);
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Check Voting Eligibility</h1>
+    <form id="voting-form">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+        <div>
+            <button type="submit" id="btn">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        // Add event listener to form submission
+        document.getElementById('voting-form').addEventListener('submit', handleSubmit);
+    </script>
+</body>
 </html>
